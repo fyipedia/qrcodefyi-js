@@ -1,21 +1,20 @@
 /**
- * QRCodeFYI API client -- TypeScript wrapper for qrcodefyi.com REST API.
+ * QRCodeFYI API client — TypeScript wrapper for qrcodefyi.com REST API.
  *
  * Zero dependencies. Uses native `fetch`.
+ *
+ * @example
+ * ```ts
+ * import { QRCodeFYI } from "qrcodefyi";
+ * const api = new QRCodeFYI();
+ * const items = await api.search("query");
+ * ```
  */
 
-import type {
-  CompareResult,
-  ComponentDetail,
-  EncodingDetail,
-  GlossaryTerm,
-  QRTypeDetail,
-  RandomResult,
-  SearchResult,
-  StandardDetail,
-  UseCaseDetail,
-  VersionDetail,
-} from "./types.js";
+/** Generic API response type. */
+export interface ApiResponse {
+  [key: string]: unknown;
+}
 
 export class QRCodeFYI {
   private baseUrl: string;
@@ -24,7 +23,7 @@ export class QRCodeFYI {
     this.baseUrl = baseUrl.replace(/\/+$/, "");
   }
 
-  private async get<T>(
+  private async get<T = ApiResponse>(
     path: string,
     params?: Record<string, string>,
   ): Promise<T> {
@@ -37,61 +36,140 @@ export class QRCodeFYI {
     return res.json() as Promise<T>;
   }
 
-  /** Search QR code types, versions, encodings, and glossary terms. */
-  async search(query: string): Promise<SearchResult> {
-    return this.get<SearchResult>("/api/search/", { q: query });
+  // -- Endpoints ----------------------------------------------------------
+
+  /** List all comparisons. */
+  async listComparisons(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/comparisons/", params);
   }
 
-  /** Get a glossary term by slug. */
-  async glossaryTerm(slug: string): Promise<GlossaryTerm> {
-    return this.get<GlossaryTerm>(`/api/term/${slug}/`);
+  /** Get comparison by slug. */
+  async getComparison(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/comparisons/${slug}/`);
   }
 
-  /** Get QR code type detail by slug. */
-  async qrType(slug: string): Promise<QRTypeDetail> {
-    return this.get<QRTypeDetail>(`/api/type/${slug}/`);
+  /** List all components. */
+  async listComponents(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/components/", params);
   }
 
-  /** Get QR code version detail by version number. */
-  async version(version: number): Promise<VersionDetail> {
-    return this.get<VersionDetail>(`/api/version/${version}/`);
+  /** Get component by slug. */
+  async getComponent(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/components/${slug}/`);
   }
 
-  /** Get QR code component detail by slug. */
-  async component(slug: string): Promise<ComponentDetail> {
-    return this.get<ComponentDetail>(`/api/component/${slug}/`);
+  /** List all encoding modes. */
+  async listEncodingModes(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/encoding-modes/", params);
   }
 
-  /** Get encoding mode detail by slug. */
-  async encoding(slug: string): Promise<EncodingDetail> {
-    return this.get<EncodingDetail>(`/api/encoding/${slug}/`);
+  /** Get encoding mode by slug. */
+  async getEncodingMode(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/encoding-modes/${slug}/`);
   }
 
-  /** Get QR code standard detail by slug. */
-  async standard(slug: string): Promise<StandardDetail> {
-    return this.get<StandardDetail>(`/api/standard/${slug}/`);
+  /** List all faqs. */
+  async listFaqs(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/faqs/", params);
   }
 
-  /** Get use case detail by slug. */
-  async useCase(slug: string): Promise<UseCaseDetail> {
-    return this.get<UseCaseDetail>(`/api/use-case/${slug}/`);
+  /** Get faq by slug. */
+  async getFaq(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/faqs/${slug}/`);
   }
 
-  /** Compare two QR code types. */
-  async compare(slugA: string, slugB: string): Promise<CompareResult> {
-    return this.get<CompareResult>("/api/compare/", {
-      a: slugA,
-      b: slugB,
-    });
+  /** List all glossary. */
+  async listGlossary(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/glossary/", params);
   }
 
-  /** Get a random QR code type. */
-  async random(): Promise<RandomResult> {
-    return this.get<RandomResult>("/api/random/");
+  /** Get term by slug. */
+  async getTerm(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/glossary/${slug}/`);
   }
 
-  /** Get the OpenAPI 3.1.0 specification. */
-  async openapi(): Promise<Record<string, unknown>> {
-    return this.get<Record<string, unknown>>("/api/openapi.json");
+  /** List all guides. */
+  async listGuides(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/guides/", params);
+  }
+
+  /** Get guide by slug. */
+  async getGuide(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/guides/${slug}/`);
+  }
+
+  /** List all recipes. */
+  async listRecipes(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/recipes/", params);
+  }
+
+  /** Get recipe by slug. */
+  async getRecipe(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/recipes/${slug}/`);
+  }
+
+  /** List all scan scenarios. */
+  async listScanScenarios(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/scan-scenarios/", params);
+  }
+
+  /** Get scan scenario by slug. */
+  async getScanScenario(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/scan-scenarios/${slug}/`);
+  }
+
+  /** List all standards. */
+  async listStandards(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/standards/", params);
+  }
+
+  /** Get standard by slug. */
+  async getStandard(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/standards/${slug}/`);
+  }
+
+  /** List all tools. */
+  async listTools(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/tools/", params);
+  }
+
+  /** Get tool by slug. */
+  async getTool(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/tools/${slug}/`);
+  }
+
+  /** List all types. */
+  async listTypes(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/types/", params);
+  }
+
+  /** Get type by slug. */
+  async getType(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/types/${slug}/`);
+  }
+
+  /** List all use cases. */
+  async listUseCases(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/use-cases/", params);
+  }
+
+  /** Get use case by slug. */
+  async getUseCase(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/use-cases/${slug}/`);
+  }
+
+  /** List all versions. */
+  async listVersions(params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/versions/", params);
+  }
+
+  /** Get version by slug. */
+  async getVersion(slug: string): Promise<ApiResponse> {
+    return this.get(`/api/v1/versions/${slug}/`);
+  }
+
+  /** Search across all content. */
+  async search(query: string, params?: Record<string, string>): Promise<ApiResponse> {
+    return this.get("/api/v1/search/", { q: query, ...params });
   }
 }
