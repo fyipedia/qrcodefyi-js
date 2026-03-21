@@ -7,9 +7,7 @@
 
 TypeScript API client for [QRCodeFYI](https://qrcodefyi.com) -- the comprehensive QR code reference covering QR code types (Model 1, Model 2, Micro QR, rMQR), 40 versions, 4 encoding modes, 4 error correction levels, ISO/IEC 18004 standards, and real-world use cases. Zero dependencies, uses native `fetch`.
 
-> **Explore QR codes at [qrcodefyi.com](https://qrcodefyi.com)** -- [Types](https://qrcodefyi.com/types/) | [Versions](https://qrcodefyi.com/versions/) | [Glossary](https://qrcodefyi.com/glossary/) | [API Docs](https://qrcodefyi.com/developers/)
-
-## Install
+> **Explore QR codes at [qrcodefyi.com](https://qrcodefyi.com)** -- | | [Glossary](https://qrcodefyi.com/glossary/) | ## Install
 
 ```bash
 npm install qrcodefyi
